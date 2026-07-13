@@ -83,7 +83,7 @@ async def play(call: types.CallbackQuery):
             os.remove(filename)
     await call.answer()
 
-# ── Minimal health-check HTTP server ──────────────────────────────────────
+# ── Health-check HTTP server ────────────────────────────────────────────────
 
 async def health(request):
     return web.Response(text="OK")
@@ -98,6 +98,7 @@ async def run_health_server():
     site = web.TCPSite(runner, "0.0.0.0", port)
     await site.start()
     print(f"Health server listening on 0.0.0.0:{port}", flush=True)
+    # Keep running forever
     while True:
         await asyncio.sleep(3600)
 
