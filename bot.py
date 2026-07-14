@@ -56,14 +56,20 @@ async def download_music(message: types.Message):
         print(f"Error: {e}")
 
 async def main():
-    # Запуск веб-сервера для Render
+    # Запускаем веб-сервер для прохождения проверки порта
     app = web.Application()
     app.router.add_get('/', health_check)
     runner = web.AppRunner(app)
     await runner.setup()
-    site = web.TCPSite(runner, '0.0.0.0', int(os.environ.get("PORT", 8080)))
-    await site.start()
     
+    # Принудительно задаем порт 8080
+    port = int(os.environ.get("PORT", 8080))
+    site = web.TCPSite(runner, '0.0.0.0', port)
+    await site.start()
+    print(f"Server started on port {port}")
+    
+    # Запускаем бота
+    print("Bot polling started")
     await dp.start_polling(bot)
 
 if __name__ == "__main__":
